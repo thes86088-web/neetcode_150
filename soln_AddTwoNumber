@@ -1,7 +1,3 @@
-/*
-question link : https://leetcode.com/problems/add-two-numbers/description/?envType=problem-list-v2&envId=wtvlw4r5
-*/
-
 /**
  * Definition for singly-linked list.
  * struct ListNode {
@@ -15,30 +11,61 @@ struct ListNode {
 	struct ListNode *next;
 };
 
-int readList( struct ListNode* node ) {
-
-    return void;
-}
-
-struct ListNode* writeInt( int num ) {
-
-    return void;
+int readList( struct ListNode* node, int p/*=1*/ ) {
+    if( node == NULL ) return 0;
+    
+    int currentValue = p*(node->val);
+    int childValue = readList( node->next, p*10, currentValue ) ;
+    return currentValue + childValue ;
 }
 
 int findMaxPowerOfTenFor( int num ) {
-
-    return void;
+    if( num < 10 ) return 10;
+    int p = 10; 
+    int found = 0;
+    while( found==0 ){
+        if( num>p && num<p*10 ) 
+            found=1;
+            
+        p=p*10;
+    }
+    return p/10;
 }
 
-struct ListNode* createList( int num ) {
+struct ListNode* writeInt( int num, int power/*1*/, int i ) {
+    if( num<10 ){
+		struct ListNode* baseNode = malloc( sizeof(ListNode) );
+		baseNode->val = num; baseNode->next = NULL;
+		return baseNode;
+	}
 
-    return void;
+	struct ListNode* node = malloc( sizeof(ListNode) );
+	int nextDigits = (num/10);
+	int currentDigit = num - nextDigits*10 ; 
+	node->val = currentDigit;
+	node->next = writeInt( nextDigits );
+
+    return node;
+}
+
+void printList( struct ListNode* node ) {
+	if( node == NULL ) { printf("NULL\n") return;}
+	printf( "%d -> ", node->val );
+	printList( node->next );
+    return;
 }
 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     int num1 = readList( l1 ); int num2 = readList( l2 );
     int result = num1 + num2 ;
-    struct ListNode* resultAsListNode = createList( result );
+    struct ListNode* resultAsListNode = writeInt( result );
     return resultAsListNode;
 
+}
+
+int main(){
+	struct ListNode* node1 = writeInt( num1 ); printList( node1 );
+	struct ListNode* node2 = writeInt( num2 ); printList( node2 );
+	struct ListNode* result = addTwoNumbers( node1, node2 ) ;
+	printList( result );
 }
