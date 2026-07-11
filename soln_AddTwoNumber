@@ -6,16 +6,21 @@
  * };
 */
 
+#include <stdlib.h>
+#include <stdio.h>
+
 struct ListNode {
 	int val;
 	struct ListNode *next;
 };
 
+size_t listNodeSize = sizeof( struct ListNode);
+
 int readList( struct ListNode* node, int p/*=1*/ ) {
     if( node == NULL ) return 0;
     
     int currentValue = p*(node->val);
-    int childValue = readList( node->next, p*10, currentValue ) ;
+    int childValue = readList( node->next, p*10 ) ;
     return currentValue + childValue ;
 }
 
@@ -32,14 +37,14 @@ int findMaxPowerOfTenFor( int num ) {
     return p/10;
 }
 
-struct ListNode* writeInt( int num, int power/*1*/, int i ) {
+struct ListNode* writeInt( int num ) {
     if( num<10 ){
-		struct ListNode* baseNode = malloc( sizeof(ListNode) );
+		struct ListNode *baseNode = malloc( listNodeSize );
 		baseNode->val = num; baseNode->next = NULL;
 		return baseNode;
 	}
 
-	struct ListNode* node = malloc( sizeof(ListNode) );
+	struct ListNode* node = malloc( listNodeSize );
 	int nextDigits = (num/10);
 	int currentDigit = num - nextDigits*10 ; 
 	node->val = currentDigit;
@@ -49,14 +54,14 @@ struct ListNode* writeInt( int num, int power/*1*/, int i ) {
 }
 
 void printList( struct ListNode* node ) {
-	if( node == NULL ) { printf("NULL\n") return;}
+	if( node == NULL ) { printf("NULL\n"); return;}
 	printf( "%d -> ", node->val );
 	printList( node->next );
     return;
 }
 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-    int num1 = readList( l1 ); int num2 = readList( l2 );
+    int num1 = readList( l1, 1 ); int num2 = readList( l2, 1 );
     int result = num1 + num2 ;
     struct ListNode* resultAsListNode = writeInt( result );
     return resultAsListNode;
@@ -64,6 +69,7 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
 }
 
 int main(){
+    int num1 = 342, num2 = 465;
 	struct ListNode* node1 = writeInt( num1 ); printList( node1 );
 	struct ListNode* node2 = writeInt( num2 ); printList( node2 );
 	struct ListNode* result = addTwoNumbers( node1, node2 ) ;
