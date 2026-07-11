@@ -19,11 +19,14 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
     present[ nums[i] ] = i;
 
   int *result = calloc(*returnSize, sizeof(int) );
+  for ( int k=0; k<*returnSize; k++ ) result[k] = -1 ;
+  //0->-1 to not confuse the initial value with actual index
 
   for( int i = 0; i<numsSize; i++ ){
     int currentNum = nums[i] ;
     int otherNum = target - currentNum ;
-    if( otherNum != currentNum && otherNum>=0 ) {
+    if( /*this_line*/otherNum != currentNum && otherNum>=0 ) { 
+        //this_line : (-1,-1) if kept, (1,1) if removed
       if( present[ otherNum ] != -1 ) {
         int nonEmptyResult[] = { present[ currentNum ], present[ otherNum ]  } ;
         result = ( int* )nonEmptyResult ;
