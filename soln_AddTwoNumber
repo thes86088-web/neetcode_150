@@ -1,0 +1,44 @@
+/*
+question link : https://leetcode.com/problems/add-two-numbers/description/?envType=problem-list-v2&envId=wtvlw4r5
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+*/
+
+struct ListNode {
+	int val;
+	struct ListNode *next;
+};
+
+int readList( struct ListNode* node ) {
+
+    return void;
+}
+
+struct ListNode* writeInt( int num ) {
+
+    return void;
+}
+
+int findMaxPowerOfTenFor( int num ) {
+
+    return void;
+}
+
+struct ListNode* createList( int num ) {
+
+    return void;
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    int num1 = readList( l1 ); int num2 = readList( l2 );
+    int result = num1 + num2 ;
+    struct ListNode* resultAsListNode = createList( result );
+    return resultAsListNode;
+
+}
