@@ -2,32 +2,54 @@
 question link : https://leetcode.com/problems/two-sum/?envType=problem-list-v2&envId=wtvlw4r5
 */
 #include <stdlib.h>
+#include <stdio.h>
 
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
   int max = nums[0] ;
   for( int i = 0; i < numsSize ; i++ )
     if( max < nums[i] ) max = nums[i] ;
+    printf( "max is %d \n", max );
 
-  int *present = ( int* )calloc( max, sizeof(int) );
+  int *present = ( int* )calloc( max+1, sizeof(int) );
+  //max -> max+1 to account for max itself since index starts from 0
   for( int j = 0; j < max ; j++ )
     present[j] = -1;
   
   for( int i = 0; i<numsSize; i++ )
     present[ nums[i] ] = i;
 
-  int *result = malloc(2, sizeof(int) );
+  int *result = calloc(*returnSize, sizeof(int) );
 
   for( int i = 0; i<numsSize; i++ ){
     int currentNum = nums[i] ;
     int otherNum = target - currentNum ;
-    if( otherNum != currentNum ) 
-      if( present[ otherNums ] != 0 )
-        //int *nonEmptyResult = { present[ currentNum ], present[ otherNum ]  } ;
-        result = ( int* ){ present[ currentNum ], present[ otherNum ]  } ;
+    if( otherNum != currentNum && otherNum>=0 ) {
+      if( present[ otherNum ] != -1 ) {
+        int nonEmptyResult[] = { present[ currentNum ], present[ otherNum ]  } ;
+        result = ( int* )nonEmptyResult ;
+      }
+    }
   }
 
   return result;   
 }
+
+int main(){
+    
+   int nums[] = {3,3}; int numsSize = ( sizeof(nums) )/( sizeof(*nums) ) ;
+   int target = 6;
+   int returnSize = 2;
+   
+   int *resultArr = twoSum( nums, numsSize, target, &returnSize) ;
+   printf( "the pair of indices is : (%d, %d)", resultArr[0], resultArr[1] );
+    
+}
+/*
+tests :
+nums = [2,7,11,15], target = 9 -> [0,1] : pass
+nums = [3,2,4], target = 6 -> [1,2] : pass
+nums = [3,3], target = 6 -> [0,1] : fail
+*/
 
 /*
 approach : 
