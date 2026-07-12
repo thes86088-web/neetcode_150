@@ -5,12 +5,8 @@ question link : https://leetcode.com/problems/two-sum/?envType=problem-list-v2&e
 #include <stdio.h>
 
 int* twoSum(int* nums, int numsSize, int target, int* returnSize) {
-  int max = nums[0] ;
-  for( int i = 0; i < numsSize ; i++ )
-    if( max < nums[i] ) max = nums[i] ;
-    printf( "max is %d \n", max );
 
-  int *present = ( int* )calloc( max+1, sizeof(int) );
+  int *present = ( int* )calloc( target+1, sizeof(int) );
   //max -> max+1 to account for max itself since index starts from 0
   for( int j = 0; j < max ; j++ )
     present[j] = -1;
