@@ -16,62 +16,112 @@ struct ListNode {
 
 size_t listNodeSize = sizeof( struct ListNode);
 
-int readList( struct ListNode* node, int p/*=1*/ ) {
-    if( node == NULL ) return 0;
-    
-    int currentValue = p*(node->val);
-    int childValue = readList( node->next, p*10 ) ;
-    return currentValue + childValue ;
-}
-
-int findMaxPowerOfTenFor( int num ) {
-    if( num < 10 ) return 10;
-    int p = 10; 
-    int found = 0;
-    while( found==0 ){
-        if( num>p && num<p*10 ) 
-            found=1;
-            
-        p=p*10;
-    }
-    return p/10;
-}
-
 struct ListNode* writeInt( int num ) {
-    if( num<10 ){
+	if( num<10 ) {
 		struct ListNode *baseNode = malloc( listNodeSize );
-		baseNode->val = num; baseNode->next = NULL;
+		baseNode->val = num;
+		baseNode->next = NULL;
 		return baseNode;
 	}
 
 	struct ListNode* node = malloc( listNodeSize );
 	int nextDigits = (num/10);
-	int currentDigit = num - nextDigits*10 ; 
+	int currentDigit = num - nextDigits*10 ;
 	node->val = currentDigit;
 	node->next = writeInt( nextDigits );
 
-    return node;
+	return node;
 }
 
+
 void printList( struct ListNode* node ) {
-	if( node == NULL ) { printf("NULL\n"); return;}
+	if( node == NULL ) {
+		printf("NULL\n");
+		return;
+	}
 	printf( "%d -> ", node->val );
 	printList( node->next );
-    return;
+	return;
 }
 
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
-    int num1 = readList( l1, 1 ); int num2 = readList( l2, 1 );
-    int result = num1 + num2 ;
-    struct ListNode* resultAsListNode = writeInt( result );
-    return resultAsListNode;
+	//printNode( l1 );
+	//printNode( l2 );
+	int carry = 0;
+	int value = 0;
+	struct ListNode* result = malloc( listNodeSize );
+	struct ListNode* currentNode = result; struct ListNode* prev = NULL ;
+	while( l1 != NULL && l2 != NULL ) {
+		//addition
+		value = l1->val + l2->val + carry ;
+		//if( value >= 10 ) {
+			carry = value/10 ;
+			value = value - carry*10;
+		//}
 
+		//current assignment
+		struct ListNode* nextNode = malloc( listNodeSize );
+		nextNode->next = NULL;
+		currentNode -> val = value;
+		currentNode->next = nextNode;
+
+		//iteration update
+		currentNode = currentNode->next ;
+		value = 0;
+		l1 = l1->next;
+		l2 = l2->next;
+	}
+	while( l1 != NULL ) {
+		//addition
+		value = l1->val + carry ;
+		//if( value >= 10 ) {
+			carry = value/10 ;
+			value = value - carry*10;
+		//}
+
+		//current assignment
+		struct ListNode* nextNode = malloc( listNodeSize );
+		nextNode->next = NULL;
+		currentNode -> val = value;
+		currentNode->next = nextNode;
+
+		//iteration update
+		currentNode = currentNode->next ;
+		value = 0;
+		l1 = l1->next;
+	}
+	while( l2 != NULL ) {
+		//addition
+		value = l2->val + carry ;
+		//if( value >= 10 ) {
+			carry = value/10 ;
+			value = value - carry*10;
+		//}
+
+		//current assignment
+		struct ListNode* nextNode = malloc( listNodeSize );
+		nextNode->next = NULL;
+		currentNode -> val = value;
+		currentNode->next = nextNode;
+
+		//iteration update
+		currentNode = currentNode->next ;
+		value = 0;
+		l2 = l2->next;
+	}
+	if( carry!=0 ) {
+		currentNode->val = carry;
+	}
+	//printNode( result );
+	return result;
 }
 
-int main(){
-    int num1 = 342, num2 = 465;
-	struct ListNode* node1 = writeInt( num1 ); printList( node1 );
-	struct ListNode* node2 = writeInt( num2 ); printList( node2 );
+int main() {
+	int num1 = 342, num2 = 465;
+	struct ListNode* node1 = writeInt( num1 );
+	printList( node1 );
+	struct ListNode* node2 = writeInt( num2 );
+	printList( node2 );
 	struct ListNode* result = addTwoNumbers( node1, node2 ) ;
 	printList( result );
 }
