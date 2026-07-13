@@ -8,31 +8,52 @@ question link : http://leetcode.com/problems/longest-substring-without-repeating
 
 int lengthOfLongestSubstring(char* s) {
     int visited[256] = {0};
-    int stringLength = ( sizeof(s) )/( sizeof(*s) );
+    int stringLength = ( sizeof(s) )/( sizeof(char) );
     //add print statements to check values stored in variables
     printf( "stringLength : %d \n", stringLength );
+    int maxStart = 0, maxEnd = 0;
     int start = 0, end = start;
+    
     for( int i=0; i<stringLength; i++ ){
         if( visited[ s[i] ] == 0 ){
             end = end + 1;
             visited[ s[i] ] = 1; 
         }
         else{
+            //end = end - 1;
+            if( end - start > maxEnd - maxStart ) {
+                maxStart = start;
+                maxEnd = end - 1 ;
+                //recording "end" disrectly produces differece of one unit
+                //record the attributes of current maximum before resetting
+            }
             start = i;
             end = i;
+            //for( int clear = 0; clear<256; clear ++  ){ visited[clear] = 0; }
         }
-        //add print statements to track values of start and end
-        //problem : if a visited cahharacter is found, start resets again without storing previous values
         printf( " i = %d, start = %d, end = %d \n", i, start, end );
+        //printf( " i = %d, maxStart = %d, maxEnd = %d \n", i, maxStart, maxEnd );
     }
-    char* result = calloc( end-start, sizeof(char) );
-    result = s+start;
-    printf( " %d -> %s -> %d\n", start, result, end ) ;
-    return end-start ;
+    if( end - start > maxEnd - maxStart ) {
+        maxStart = start;
+        maxEnd = end ;
+    }
+    int maxLen = maxEnd-maxStart + 1;
+    
+    char* result = (char*)calloc( maxLen , sizeof(char) );
+    result = s+maxStart;
+    
+    //slicing using array 
+    //enum{ maxLen = maxEnd-maxStart };
+    //char result[maxLen] = s + maxStart;
+    
+    printf( " %d -> %s -> %d\n", maxStart, result, maxEnd ) ;
+    //prints whole string instead of required slice 
+    return maxLen ;
 }
 
 int main(){
-    char *s = "abcabcbb";
+    char *s = "pwwkew";
     int len = lengthOfLongestSubstring(s);
     printf( "len : %d ", len );
 }
