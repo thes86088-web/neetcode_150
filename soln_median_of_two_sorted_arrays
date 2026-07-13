@@ -1,63 +1,121 @@
 
+#include <stdio.h>
+#include <stdlib.h>
+
+void printArr(int *arr, int len, char *message){
+    printf( "%s :", message );
+    for( int index = 0; index < len; index++ ){
+        printf("%d ", arr[index]);
+    }
+    printf("\n");
+}
+
+
 int* joinTwoArrays( int* nums1, int nums1Size, int* nums2, int nums2Size ){
-    int *temp = calloc( nums1Size + nums2Size, sizeof(int) );
+    int joinedLength = nums1Size + nums2Size ;
+    int *joined = calloc( joinedLength, sizeof(int) );
     int i = 0, j = 0, k = 0;
     while( i<nums1Size ){
-        merged[k] = nums1[i]
+        joined[k] = nums1[i] ;
         k = k + 1; i = i + 1; 
     }
    while( j<nums2Size ){
-        merged[k] = nums1[j]
+        joined[k] = nums2[j] ;
         k = k + 1; j = j + 1; 
     }
-    return temp;
+    
+    return joined;
 }
 
 void mergeFromMidInPlace( int *arr, int len ){
+    int *temp = calloc( len, sizeof(int) );
     int mid = len/2;
     int i = 0, j = mid, k = 0;
     while( i<mid && j<len ){
-        if( nums1[i]<nums2[j] ){
-            merged[k] = nums1[i]
+        if( arr[i]<arr[j] ){
+            temp[k] = arr[i] ;
             k = k + 1; i = i + 1; 
         }
         else{
-            merged[k] = nums2[j]
+            temp[k] = arr[j] ;
             k = k + 1; j = j + 1;
         }
     }
     while( i<mid ){
-        merged[k] = nums1[i]
+        temp[k] = arr[i] ;
         k = k + 1; i = i + 1; 
     }
    while( j<len ){
-        merged[k] = nums1[j]
+        temp[k] = arr[j] ;
         k = k + 1; j = j + 1; 
     }
+    
+    for( int index = 0; index < len; index++ ){
+        arr[index] = temp[index];
+    }
+    free( temp );
+    
     return;
 
 }
 
-double findMedianofSortedArray( int* arr, int len ){
-  int midIndex = len / 2 ;
-  int sum = 0;
-  for( int index = 0; index < midIndex; index++ ){
+/*
+double medianOfSortedArray( int* arr, int len ){
+    printf( "len : %d \n", len ) ;
+  int midIndex = len / 2 ; 
+    printf( "midIndex : %d \n", midIndex ) ;
+  int value = arr[ midIndex ]; 
+    printf( "value : %d \n", value ) ;
+  if( len%2 == 0 ) { 
+      value =  ( value + arr[ midIndex + 1 ] )/2 ;
+      }
+  
+  int sum = 0; int index = 0 ;
+  for( ; index < midIndex; index++ ){
     sum = sum + arr[index];
   }
   double median = ((double)sum)/index;
+  
+  printf( "value ( just before return ) : %d \n", value ) ;
+  return value;
 }
+*/
 
 void mergeSort( int *arr, int len ){
-    if( len == 1 ) return arr;
+    if( len <= 1 ) return ;
     int mid = len/2;
     mergeSort( arr, mid ); mergeSort( arr+mid, len-mid );
     mergeFromMidInPlace( arr, len );
 }
 
 double findMedianSortedArrays(int* nums1, int nums1Size, int* nums2, int nums2Size) {
-    int *merged = joinTwoArrays( nums1, nums1Size, nums2, nums2Size ) ;
     int newLength = nums1Size + nums2Size ; 
+    
+    int *merged = joinTwoArrays( nums1, nums1Size, nums2, nums2Size ) ;
+    //printArr( merged, newLength, "joined" );
+    
     mergeSort( merged, newLength );
-    double result = findMedianofSortedArray( merged, newLength );
-    return result;
+    //printArr( merged, newLength, "merged" );
+    
+    int midIndex = newLength / 2 ; 
+    int value = merged[ midIndex ]; 
+
+    if( newLength%2 == 0 ) { 
+        value =  ( value + merged[ midIndex + 1 ] )/2 ;
+    }
+    
+    //double result = medianOfSortedArray( merged, newLength );
+    printf( "median : %d \n", value ) ;
+
+    return value;
 }
+
+int main(){
+    int nums1[] = {1,3}; int nums1Size = (sizeof(nums1))/(sizeof(*nums1)) ;
+    //printf( "len(nums1) : %d \n", nums1Size ) ;
+
+    int nums2[] = {2}; int nums2Size = (sizeof(nums2))/(sizeof(*nums2)) ;
+    //printf( "len(nums2) : %d \n", nums2Size ) ;
+    
+    double result = findMedianSortedArrays( nums1, nums1Size, nums2, nums2Size) ;
+    }
