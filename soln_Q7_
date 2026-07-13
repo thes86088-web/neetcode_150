@@ -1,0 +1,22 @@
+/*
+question_link : https://leetcode.com/problems/reverse-integer/description/?envType=problem-list-v2&envId=we37i0vg 
+*/
+
+int reverse(int x){
+    int wasNegative = 0;
+    if( x<0 ){
+        wasNegative = 1; x = x*-1;
+    }
+    int result = 0; int nextX = 0;
+    //int powerOfTen = 1;
+    while( x>10 ){
+        nextX = x/10;
+        result = result*10 + ( x - nextX*10 ) ; 
+        //powerOfTen = powerOfTen*10;
+    }
+    result = result + x;
+    if(wasNegative){
+        result = result*-1 ;
+    }
+    return result;
+}
