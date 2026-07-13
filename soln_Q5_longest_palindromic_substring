@@ -1,0 +1,66 @@
+
+int isPalindrome( char *s ){
+    int len = ( sizeof(s) )/( sizeof(*s) );
+    int mid = len/2 ;
+    int start = 0, end = len-1;
+
+    while( start<=mid && end>=mid ){
+        if( s[start] != s[end] ) return 0;
+    }
+    return true;
+}
+
+struct SubstringData{
+    int start; int len;
+};
+
+SubstringData* dataOfLongestPalindrome( char *s, int start, int end ){
+    int len = ( sizeof(s) )/( sizeof(*s) );
+
+    if( len == 1 ){ 
+        SubstringData* result = ( SubstringData* )malloc( sizeof( SubstringData ) );   
+        result->start = start; result->len = 1;
+        return result ; 
+    }
+
+    int i = start, j = end;
+    
+    //while( i<len && j>0 ){
+    if( s[i]==s[j] ){
+            maxLen = maxLen + 1;
+            i = i + 1;
+            j = j - 1 ;
+            SubstringData* result = ( SubstringData* )malloc( sizeof( SubstringData ) ); result->start = start;  
+            SubstringData* nextSubstring = dataOfLongestPalindrome(s, start+1, end-1);
+             result->len = 1 + nextSubstring->len ;
+            return result ; 
+        } 
+    }
+    else{
+        SubstringData* d1 = dataOfLongestPalindrome(s, start+1, end);
+        SubstringData* d2 = dataOfLongestPalindrome(s, start, end-1);
+
+        if( d1->len > d2->len ) return d1;
+        else return d2;
+
+    }
+
+}
+
+void copySubstring( char* from, char* into, int len ){
+    for( int x=0; x<len; x++ ){
+        to[i] = from[i];
+    }
+}
+
+char* longestPalindrome(char* s) {
+
+    int len = ( sizeof(s) )/( sizeof(*s) );
+    SubstringData* result = dataOfLongestPalindrome( s, 0, len-1 );
+    printf( " result->start : %d \n", result->start );
+    printf( " result->len : %d \n", result->len );
+    char* requiredSubstring = calloc( result->len, sizeof(char) );
+    copySubstring( s+result->start, requiredSubstring, result->len );
+    return requiredSubstring;
+
+}
